@@ -11,10 +11,19 @@ impl TaskManager {
     }
 
     fn get_input_with_prompt(&self, prompt: &str) -> String {
-        self.print_message(prompt);
+        self.get_input_with_prompt_purified(prompt, true)
+    }
+
+    fn get_input_with_prompt_purified(&self, prompt: &str, purified: bool) -> String {
+        println!("\n{}", prompt);
         let mut input = String::new();
         std::io::stdin().read_line(&mut input).unwrap();
-        return input.trim().to_string().to_lowercase().replace(" ", "");
+        if purified {
+            input = input.trim().to_string().to_lowercase().replace(" ", "");
+        } else {
+            input = input.trim().to_string();
+        }
+        return input;
     }
 
     fn print_message(&self, message: &str) {
@@ -38,8 +47,8 @@ impl TaskManager {
     }
 
     fn add_task(&mut self) {
-        let title = self.get_input_with_prompt("Please enter the title of the task:");
-        let description = self.get_input_with_prompt("Please enter the description of the task:");
+        let title = self.get_input_with_prompt_purified("Please enter the title of the task:", false);
+        let description = self.get_input_with_prompt_purified("Please enter the description of the task:", false);
         let status = TaskStatus::from_str(self.get_input_with_prompt("Please enter the status of the task (Todo, InProgress, Done):").as_str());
         let importance = TaskImportance::from_str(self.get_input_with_prompt("Please enter the importance of the task (Low, Medium, High):").as_str());
         self.tasks.push(Task { title, description, status, importance });
@@ -54,12 +63,12 @@ impl TaskManager {
             let choice = self.get_input_with_prompt("");
             match choice.as_str() {
                 "1" => {
-                    let title = self.get_input_with_prompt("Please enter the new title of the task:");
+                    let title = self.get_input_with_prompt_purified("Please enter the new title of the task:", false);
                     self.tasks[index].title = title;
                     self.print_message("Task modified");
                 }
                 "2" => {
-                    let description = self.get_input_with_prompt("Please enter the new description of the task:");
+                    let description = self.get_input_with_prompt_purified("Please enter the new description of the task:", false);
                     self.tasks[index].description = description;
                     self.print_message("Task modified");
                 }
