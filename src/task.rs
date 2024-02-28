@@ -16,6 +16,17 @@ impl Display for TaskStatus {
     }
 }
 
+impl TaskStatus {
+    pub fn from_str(s: &str) -> TaskStatus {
+        match s {
+            "todo" => TaskStatus::Todo,
+            "inprogress" => TaskStatus::InProgress,
+            "done" => TaskStatus::Done,
+            _ => TaskStatus::Todo,
+        }
+    }
+}
+
 pub enum TaskImportance {
     Low,
     Medium,
@@ -28,6 +39,17 @@ impl Display for TaskImportance {
             TaskImportance::Low => write!(f, "Low"),
             TaskImportance::Medium => write!(f, "Medium"),
             TaskImportance::High => write!(f, "High"),
+        }
+    }
+}
+
+impl TaskImportance {
+    pub fn from_str(s: &str) -> TaskImportance {
+        match s {
+            "low" => TaskImportance::Low,
+            "medium" => TaskImportance::Medium,
+            "high" => TaskImportance::High,
+            _ => TaskImportance::Low,
         }
     }
 }
